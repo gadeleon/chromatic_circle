@@ -18,9 +18,12 @@ Brainstorm
 
 * Design function to calculate intervals
 * Build relations such that intervals are calculated correctly
-* Remember Key scale intervals are 2.5 3.5 (C, D, E, F, G, A, B)
-* For lists, scale intervals are +2, +2, +1, +2, +2, +2, +1
+* Remember Major key scale intervals are 2.5 3.5 (C, D, E, F, G, A, B)
+* For lists, major scale intervals are +2, +2, +1, +2, +2, +2, +1
+* Minor Key scale is 1.5, 2.5, 2 (A, B, C, D, E, F, G, A)
+* For lists, minor scale intervals are +2, +1, +2, +2, +1, +2, +2
 * All the notes C, C#, D, D#, E, F, F#, G, G#, A, A#, B
+
 '''
 
 CHROMA_SCALE = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
