@@ -30,3 +30,7 @@ def gen_key(note):
     '''
     start = [CHROMA_SCALE[CHROMA_SCALE.index(note)]]
     return start
+
+
+if __name__ == '__main__':
+    gen_key('G')
