@@ -27,6 +27,9 @@ Brainstorm
 '''
 
 CHROMA_SCALE = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+MAJOR_HALF = [3, 7]
+MINOR_HALF = [2, 5]
+INTVAL = {'major': [3, 7], 'minor': [2, 5]}
 
 def gen_key(note):
     '''
@@ -38,7 +41,7 @@ def gen_key(note):
     interval = 1
     while len(key) < 8:
         key.append(CHROMA_SCALE[note % len(CHROMA_SCALE)])
-        if interval == 3 or interval == 7:
+        if interval in INTVAL['major']:
             note += 1
         else:
             note += 2
@@ -47,5 +50,5 @@ def gen_key(note):
 
 
 if __name__ == '__main__':
-    g = gen_key('A')
+    g = gen_key('C')
     print g
