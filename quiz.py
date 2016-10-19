@@ -18,19 +18,36 @@ Brainstorm
 
 * Design function to calculate intervals
 * Build relations such that intervals are calculated correctly
-* Remember Key scale is 2.5 3.5 (C, D, E, F, G, A, B)
+* Remember Key scale intervals are 2.5 3.5 (C, D, E, F, G, A, B)
+* For lists, scale intervals are +2, +2, +1, +2, +2, +2, +1
 * All the notes C, C#, D, D#, E, F, F#, G, G#, A, A#, B
 '''
 
-CHROMA_SCALE = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#']
+CHROMA_SCALE = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 
 def gen_key(note):
     '''
     Using the CHROMA_SCALE for reference, create the key.
     '''
-    start = [CHROMA_SCALE[CHROMA_SCALE.index(note)]]
+    note = CHROMA_SCALE.index(note)
+    start = [CHROMA_SCALE[note]]
+    note += 2
+    start.append(CHROMA_SCALE[note])
+    note += 2
+    start.append(CHROMA_SCALE[note])
+    note += 1
+    start.append(CHROMA_SCALE[note])
+    note += 2
+    start.append(CHROMA_SCALE[note])
+    note += 2
+    start.append(CHROMA_SCALE[note])
+    note += 2
+    start.append(CHROMA_SCALE[note])
+    note += 1
+    start.append(CHROMA_SCALE[note % len(CHROMA_SCALE)])
     return start
 
 
 if __name__ == '__main__':
-    gen_key('G')
+    g = gen_key('C')
+    print g
