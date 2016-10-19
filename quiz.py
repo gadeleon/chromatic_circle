@@ -19,5 +19,14 @@ Brainstorm
 * Design function to calculate intervals
 * Build relations such that intervals are calculated correctly
 * Remember Key scale is 2.5 3.5 (C, D, E, F, G, A, B)
-
+* All the notes C, C#, D, D#, E, F, F#, G, G#, A, A#, B
 '''
+
+CHROMA_SCALE = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#']
+
+def gen_key(note):
+    '''
+    Using the CHROMA_SCALE for reference, create the key.
+    '''
+    start = [CHROMA_SCALE[CHROMA_SCALE.index(note)]]
+    return start
