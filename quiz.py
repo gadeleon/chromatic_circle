@@ -74,16 +74,38 @@ print "What is the [Random Degree] of [KeySig[0]] [Major/Minor]"
 Tone objects to make it easy to switch between flats, naturals, and sharps?
 How?
 
-B# = C = Db
+B# = C = Dbb
+
+B## = C# = Db
+
+C## = D = Ebb
+
+C### = D# = Eb
+
+D## = E = Fb
+
+E# = F = Gbb
+
+E## = F# = Gb
+
+F## = G == Abb
 
 F## = G# = Ab
 
-G## = A# = Bb
+G## = A = Bbb
 
-C## = D# = Eb
+G### = A# = Bb
+
+A## = B == Cb
 
 Can that relation be calculated?
 '''
+
+class Tone(object):
+    def __init__(self, note):
+        self.note = note
+        self.note_up = 
+
 
 
 CHROMA_SCALE = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
