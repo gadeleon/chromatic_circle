@@ -10,6 +10,10 @@ What is the [3rd] of [C] [Maj]?
 
 Expects the Answer: E (or E Maj)
 
+What notes are in a [C] [major chord] (triad?)?
+
+Expects the Answer: C E G
+
 '''
 
 '''
@@ -29,8 +33,8 @@ Brainstorm
 '''
 Correcting Signatures for Flats & Sharps
 
-1. Ensure there's A - G in the signature. Adjust accordingly. 
-2. See if Sharps >= 7, if it is, switch to flats.
+1. Ensure there's A - G in the signature. Adjust accordingly.
+2. If notes had to flip to flat, switch the tonic.
 3. Adjust existing signature is back to A - G.
 
 Example:
@@ -38,11 +42,24 @@ Example:
 D# (Normally Eb)
 D#'s Key Signature is ['D#', 'F', 'G', 'G#', 'A#', 'C', 'D', 'D#']
 
-First, Correct the letters
-['D#', 'F', 'G', 'G#', 'A#', 'C', 'D', 'D#'] > ['D#', 'F', 'G', 'Ab', 'Bb', 'C', 'D', 'D#']
+First, Correct the letters. G appears twice, so we correct the second G to Ab.
+['D#', 'F', 'G', 'G#', 'A#', 'C', 'D', 'D#'] > ['D#', 'F', 'G', 'Ab', 'A#', 'C', 'D', 'D#']
 
-Since I had to add Flats, all exiting Sharps turn into their flats.
-['D#', 'F', 'G', 'Ab', 'Bb', 'C', 'D', 'D#'] > ['Eb', 'F', 'G', 'Ab', 'Bb', 'C', 'D', 'Eb']
+Now A is being repeated. So we change the second A to Bb
+['D#', 'F', 'G', 'Ab', 'A#', 'C', 'D', 'D#'] > ['D#', 'F', 'G', 'Ab', 'Bb', 'C', 'D', 'D#']
+
+D repeats itself though. Let's make the 8th (the octave) Eb to keep proper syntax.
+['D#', 'F', 'G', 'Ab', 'Bb', 'C', 'D', 'D#'] > ['D#', 'F', 'G', 'Ab', 'Bb', 'C', 'D', 'Eb]
+
+Since we changed the octave, we should have the tonic match for consistency.
+['D#', 'F', 'G', 'Ab', 'Bb', 'C', 'D', 'Eb] > ['Eb', 'F', 'G', 'Ab', 'Bb', 'C', 'D', 'Eb]
+
+Therefore, 'D#' is not actually a valid key and would rename itself to Eb in the program
+
+
+Sharps and flats aren't allowed to mix/be in the same signature. So with that in mind, D# *has* to become Eb.
+
+
 
 
 '''
@@ -51,8 +68,20 @@ Since I had to add Flats, all exiting Sharps turn into their flats.
 Tone objects to make it easy to switch between flats, naturals, and sharps?
 How?
 
+B# = C = Db
 
+Can that relation be calculated?
 '''
+
+class Tone(object):
+    def __init__(self):
+        self.natural = natural,
+        self.flat = flat
+        self.sharp = sharp
+
+class KeySig(object):
+    def __init__(self, key):
+        self.key = key
 
 CHROMA_SCALE = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 MAJOR_HALF = [3, 7]
