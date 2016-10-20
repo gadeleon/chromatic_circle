@@ -112,7 +112,8 @@ class Tone(object):
 
 def get_enharmonic(length, note, up=True):
     '''
-    Gets the distance between two letter changes in order to express sharps and flats
+    Gets the distance between two letter changes in order to express sharps and flats otherwise known as the
+    enharmonic equivalent
     '''
     try:
         pos = CHROMA_SCALE.index(note)
