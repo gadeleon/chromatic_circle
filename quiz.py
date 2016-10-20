@@ -100,7 +100,7 @@ A## = B = Cb
 
 Can that relation be calculated?
 
-Calculate distance between notes. Having a positive number converts to sharps, negatives to flats.
+Calculate distance between notes. Having a positive number converts to flats, negatives to sharps.
 '''
 
 class Tone(object):
@@ -169,8 +169,7 @@ def adjust_key(keysig):
         try:
             if keysig[i][0] == keysig[i+1][0]:
                 print 'Aw nuts, we have a problem!'
-
-
+                keysig[i+1] = get_enharmonic(len(CHROMA_SCALE), keysig[i+1])
         except IndexError:
             pass
     if keysig[-1] != keysig[0]:
@@ -179,16 +178,9 @@ def adjust_key(keysig):
 
 
 if __name__ == '__main__':
-    #ds = gen_key_sig('D#', 'major')
-    #print ds
-    for i in CHROMA_SCALE:
-        flat = get_enharmonic(len(CHROMA_SCALE), i)
-        sharp = get_enharmonic(len(CHROMA_SCALE), i, up=False)
-        #sharp = sharps(len(CHROMA_SCALE), i)
-        print '{} = {} = {}'.format(sharp, i, flat)
-
-    
-    #ds = adjust_key(ds)
-    #print ds
+    ds = gen_key_sig('D#', 'major')
+    print ds    
+    ds = adjust_key(ds)
+    print ds
     #a = gen_key_sig('C', 'minor')
     #print a
