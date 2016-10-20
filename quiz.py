@@ -110,7 +110,7 @@ class Tone(object):
         self.note_down = ''
 
 
-def flats(length, note):
+def get_enharmonic(length, note, up=True):
     '''
     Gets the distance between two letter changes in order to express sharps and flats
     '''
@@ -120,27 +120,16 @@ def flats(length, note):
         raise
     steps = 0
     while CHROMA_SCALE[pos % length][0] == note[0]:
-        pos += 1
+        if up:
+            pos += 1
+        else:
+            pos -= 1
         steps += 1
-    flats = 'b' * steps
+    if up:
+        flats = 'b' * steps
+    else:
+        flats = '#' * steps
     return '{}{}'.format(CHROMA_SCALE[pos % length], flats)
-
-def sharps(length, note):
-    '''
-    Gets the distance between two letter changes in order to express sharps
-    '''
-    try:
-        pos = CHROMA_SCALE.index(note)
-    except ValueError:
-        raise
-    steps = 0
-    while CHROMA_SCALE[pos % length][0] == note[0]:
-        pos -= 1
-        steps += 1
-    sharps = '#' * steps
-    return '{}{}'.format(CHROMA_SCALE[pos % length], sharps)
- 
-
 
 
 
@@ -192,8 +181,9 @@ if __name__ == '__main__':
     #ds = gen_key_sig('D#', 'major')
     #print ds
     for i in CHROMA_SCALE:
-        flat = flats(len(CHROMA_SCALE), i)
-        sharp = sharps(len(CHROMA_SCALE), i)
+        flat = get_enharmonic(len(CHROMA_SCALE), i)
+        sharp = get_enharmonic(len(CHROMA_SCALE), i, up=False)
+        #sharp = sharps(len(CHROMA_SCALE), i)
         print '{} = {} = {}'.format(sharp, i, flat)
 
     
