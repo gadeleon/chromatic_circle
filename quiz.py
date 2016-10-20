@@ -88,7 +88,7 @@ E# = F = Gbb
 
 E## = F# = Gb
 
-F## = G == Abb
+F## = G = Abb
 
 F## = G# = Ab
 
@@ -96,7 +96,7 @@ G## = A = Bbb
 
 G### = A# = Bb
 
-A## = B == Cb
+A## = B = Cb
 
 Can that relation be calculated?
 '''
