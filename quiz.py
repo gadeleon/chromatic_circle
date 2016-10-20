@@ -99,12 +99,33 @@ G### = A# = Bb
 A## = B = Cb
 
 Can that relation be calculated?
+
+Calculate distance between notes. Having a positive number converts to sharps, negatives to flats.
 '''
 
 class Tone(object):
     def __init__(self, note):
         self.note = note
-        self.note_up = 
+        self.note_up = ''
+        self.note_down = ''
+
+
+def distance(length, note):
+    '''
+    Gets the distance between two letter changes in order to express sharps and flats
+    '''
+    try:
+        pos = CHROMA_SCALE.index(note)
+    except ValueError:
+        raise
+    steps = 0
+    while CHROMA_SCALE[pos % length][0] == note[0]:
+        pos += 1
+        steps += 1
+    flats = 'b' * steps
+    return '{}{}'.format(CHROMA_SCALE[pos % length], flats)
+ 
+
 
 
 
@@ -153,9 +174,13 @@ def adjust_key(keysig):
 
 
 if __name__ == '__main__':
-    ds = gen_key_sig('D#', 'major')
-    print ds
-    ds = adjust_key(ds)
-    print ds
+    #ds = gen_key_sig('D#', 'major')
+    #print ds
+    for i in CHROMA_SCALE:
+        eb = distance(len(CHROMA_SCALE), i)
+        print eb
+    
+    #ds = adjust_key(ds)
+    #print ds
     #a = gen_key_sig('C', 'minor')
     #print a
