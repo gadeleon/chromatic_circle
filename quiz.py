@@ -18,13 +18,11 @@ Brainstorm
 
 * Design function to calculate intervals
 * Build relations such that intervals are calculated correctly
-* Remember Major key scale intervals are 2.5 3.5 (C, D, E, F, G, A, B)
+* Remember Natural Major key scale intervals are 2.5 3.5 (C, D, E, F, G, A, B)
 * For lists, major scale intervals are +2, +2, +1, +2, +2, +2, +1
 * Natural Minor Key scale is 1.5, 2.5, 2 (A, B, C, D, E, F, G, A)
 * For lists, natural minor scale intervals are +2, +1, +2, +2, +1, +2, +2
 * The third, sixth, and seventh are flats so 
-* Harmonic Minor Key scale is 1.5, 2.5, 1.5*, .5 *this is 1 stop (A, B, C, D, E, F, G#, A)
-* For lists, harmonic minor scole intervals are +2, +1, +2, +2, +1, +3, +1
 * All the notes C, C#, D, D#, E, F, F#, G, G#, A, A#, B
 '''
 
