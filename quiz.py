@@ -22,7 +22,36 @@ Brainstorm
 * For lists, major scale intervals are +2, +2, +1, +2, +2, +2, +1
 * Natural Minor Key scale is 1.5, 2.5, 2 (A, B, C, D, E, F, G, A)
 * For lists, natural minor scale intervals are +2, +1, +2, +2, +1, +2, +2
-* All the notes C, C#, D, D#, E, F, F#, G, G#, A, A#, B
+* In writing the notes of a scale, it is customary that each scale degree be assigned with a successive letter.
+* All the notes C, C#/Db, D, D#/Eb, E, F, F#/Gb, G, G#/Ab, A, A#/Bb, B
+'''
+
+'''
+Correcting Signatures for Flats & Sharps
+
+1. Ensure there's A - G in the signature. Adjust accordingly. 
+2. See if Sharps >= 7, if it is, switch to flats.
+3. Adjust existing signature is back to A - G.
+
+Example:
+
+D# (Normally Eb)
+D#'s Key Signature is ['D#', 'F', 'G', 'G#', 'A#', 'C', 'D', 'D#']
+
+First, Correct the letters
+['D#', 'F', 'G', 'G#', 'A#', 'C', 'D', 'D#'] > ['D#', 'F', 'G', 'Ab', 'Bb', 'C', 'D', 'D#']
+
+Since I had to add Flats, all exiting Sharps turn into their flats.
+['D#', 'F', 'G', 'Ab', 'Bb', 'C', 'D', 'D#'] > ['Eb', 'F', 'G', 'Ab', 'Bb', 'C', 'D', 'Eb']
+
+
+'''
+
+'''
+Tone objects to make it easy to switch between flats, naturals, and sharps?
+How?
+
+
 '''
 
 CHROMA_SCALE = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
@@ -30,7 +59,7 @@ MAJOR_HALF = [3, 7]
 MINOR_HALF = [2, 5]
 INTVAL = {'major': [3, 7], 'minor': [2, 5]}
 
-def gen_key(note, scale):
+def gen_key_sig(note, scale):
     '''
     Using the CHROMA_SCALE for reference, create the key.
     NOTE: This only works with major. May refactor.
@@ -54,7 +83,10 @@ def gen_key(note, scale):
 
 
 if __name__ == '__main__':
-    g = gen_key('C', 'major')
+    g = gen_key_sig('C', 'major')
     print g
-    a = gen_key('A', 'minor')
+    for i in CHROMA_SCALE:
+        s = gen_key_sig(i, 'major')
+        print s
+    a = gen_key_sig('A', 'minor')
     print a
