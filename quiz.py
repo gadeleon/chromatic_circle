@@ -28,6 +28,7 @@ Brainstorm
 * For lists, natural minor scale intervals are +2, +1, +2, +2, +1, +2, +2
 * In writing the notes of a scale, it is customary that each scale degree be assigned with a successive letter.
 * All the notes C, C#/Db, D, D#/Eb, E, F, F#/Gb, G, G#/Ab, A, A#/Bb, B
+* Have quiz pull from valid pool of letters (ie )
 '''
 
 '''
@@ -52,12 +53,17 @@ D repeats itself though. Let's make the 8th (the octave) Eb to keep proper synta
 ['D#', 'F', 'G', 'Ab', 'Bb', 'C', 'D', 'D#'] > ['D#', 'F', 'G', 'Ab', 'Bb', 'C', 'D', 'Eb]
 
 Since we changed the octave, we should have the tonic match for consistency.
+Sharps and flats aren't allowed to mix/be in the same signature. So with that in mind, D# *has* to become Eb.
+Because of these two rules, we change the signature one final time
 ['D#', 'F', 'G', 'Ab', 'Bb', 'C', 'D', 'Eb] > ['Eb', 'F', 'G', 'Ab', 'Bb', 'C', 'D', 'Eb]
 
-Therefore, 'D#' is not actually a valid key and would rename itself to Eb in the program
+While D# and it's degrees are 100-percent valid as tones. D# cannot be written as a root. (Well, it can but not for CoF)
+D# should become Eb in the program.
+
+Will need to display the question as "What is the [3rd] of [Eb] [Major]" but the back end, it would look something like
+print "What is the [Random Degree] of [KeySig[0]] [Major/Minor]"
 
 
-Sharps and flats aren't allowed to mix/be in the same signature. So with that in mind, D# *has* to become Eb.
 
 
 
@@ -117,5 +123,5 @@ if __name__ == '__main__':
     for i in CHROMA_SCALE:
         s = gen_key_sig(i, 'major')
         print s
-    a = gen_key_sig('A', 'minor')
+    a = gen_key_sig('C', 'minor')
     print a
