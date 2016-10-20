@@ -167,20 +167,30 @@ def adjust_key(keysig):
     '''
     for i in range(len(keysig)):
         try:
-            if keysig[i][0] == keysig[i+1][0]:
-                print 'Aw nuts, we have a problem!'
-                keysig[i+1] = get_enharmonic(len(CHROMA_SCALE), keysig[i+1])
+            if keysig[i % len(keysig)][0] == keysig[(i+1) % len(keysig)][0] and (keysig[(i-1) % len(keysig)][-1] == keysig[(i+1) % len(keysig)][-1]):
+                if i != 7:
+                    keysig[(i) % len(keysig)] = get_enharmonic(len(CHROMA_SCALE), keysig[(i) % len(keysig)], up=False)
+            elif keysig[i % len(keysig)][0] == keysig[(i+1) % len(keysig)][0]:
+                keysig[(i+1) % len(keysig)] = get_enharmonic(len(CHROMA_SCALE), keysig[(i+1) % len(keysig)])
+            else:
+                pass
         except IndexError:
-            pass
+            raise
     if keysig[-1] != keysig[0]:
         keysig[0] = keysig[-1]
+    # Do it one more time!
     return keysig
 
 
 if __name__ == '__main__':
-    ds = gen_key_sig('D#', 'major')
-    print ds    
-    ds = adjust_key(ds)
-    print ds
+    # ds = gen_key_sig('D#', 'major')
+    # print ds    
+    # ds = adjust_key(ds) 
+    # print ds
     #a = gen_key_sig('C', 'minor')
     #print a
+    for i in CHROMA_SCALE:
+        sig = gen_key_sig(i, 'major')
+        print sig
+        sig = adjust_key(sig)
+        print sig
