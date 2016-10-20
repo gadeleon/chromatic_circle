@@ -22,7 +22,6 @@ Brainstorm
 * For lists, major scale intervals are +2, +2, +1, +2, +2, +2, +1
 * Natural Minor Key scale is 1.5, 2.5, 2 (A, B, C, D, E, F, G, A)
 * For lists, natural minor scale intervals are +2, +1, +2, +2, +1, +2, +2
-* The third, sixth, and seventh are flats so 
 * All the notes C, C#, D, D#, E, F, F#, G, G#, A, A#, B
 '''
 
