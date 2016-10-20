@@ -90,7 +90,7 @@ E## = F# = Gb
 
 F## = G = Abb
 
-F## = G# = Ab
+F### = G# = Ab
 
 G## = A = Bbb
 
@@ -124,6 +124,21 @@ def flats(length, note):
         steps += 1
     flats = 'b' * steps
     return '{}{}'.format(CHROMA_SCALE[pos % length], flats)
+
+def sharps(length, note):
+    '''
+    Gets the distance between two letter changes in order to express sharps
+    '''
+    try:
+        pos = CHROMA_SCALE.index(note)
+    except ValueError:
+        raise
+    steps = 0
+    while CHROMA_SCALE[pos % length][0] == note[0]:
+        pos -= 1
+        steps += 1
+    sharps = '#' * steps
+    return '{}{}'.format(CHROMA_SCALE[pos % length], sharps)
  
 
 
@@ -177,8 +192,10 @@ if __name__ == '__main__':
     #ds = gen_key_sig('D#', 'major')
     #print ds
     for i in CHROMA_SCALE:
-        eb = distance(len(CHROMA_SCALE), i)
-        print eb
+        flat = flats(len(CHROMA_SCALE), i)
+        sharp = sharps(len(CHROMA_SCALE), i)
+        print '{} = {} = {}'.format(sharp, i, flat)
+
     
     #ds = adjust_key(ds)
     #print ds
