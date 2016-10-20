@@ -76,18 +76,15 @@ How?
 
 B# = C = Db
 
+F## = G# = Ab
+
+G## = A# = Bb
+
+C## = D# = Eb
+
 Can that relation be calculated?
 '''
 
-class Tone(object):
-    def __init__(self):
-        self.natural = natural,
-        self.flat = flat
-        self.sharp = sharp
-
-class KeySig(object):
-    def __init__(self, key):
-        self.key = key
 
 CHROMA_SCALE = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 MAJOR_HALF = [3, 7]
@@ -116,12 +113,27 @@ def gen_key_sig(note, scale):
             raise SystemExit
     return key
 
+def adjust_key(keysig):
+    '''
+    Looks at key generated from gen_key_sig and corrects for flats and sharps
+    '''
+    for i in range(len(keysig)):
+        try:
+            if keysig[i][0] == keysig[i+1][0]:
+                print 'Aw nuts, we have a problem!'
+
+
+        except IndexError:
+            pass
+    if keysig[-1] != keysig[0]:
+        keysig[0] = keysig[-1]
+    return keysig
+
 
 if __name__ == '__main__':
-    g = gen_key_sig('C', 'major')
-    print g
-    for i in CHROMA_SCALE:
-        s = gen_key_sig(i, 'major')
-        print s
-    a = gen_key_sig('C', 'minor')
-    print a
+    ds = gen_key_sig('D#', 'major')
+    print ds
+    ds = adjust_key(ds)
+    print ds
+    #a = gen_key_sig('C', 'minor')
+    #print a
