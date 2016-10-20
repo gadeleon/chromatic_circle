@@ -110,7 +110,7 @@ class Tone(object):
         self.note_down = ''
 
 
-def distance(length, note):
+def flats(length, note):
     '''
     Gets the distance between two letter changes in order to express sharps and flats
     '''
