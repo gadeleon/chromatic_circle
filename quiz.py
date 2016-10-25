@@ -225,17 +225,20 @@ def gen_key_sig(note, scale):
         ## FIXME: Make Sure next tone is the next letter
         if tone[0] not in key:
             key.append(tone)
+            # Get pos of tone[0] in LETTER_ORDER to write context
+            spelling = LETTER_ORDER.index(tone[0])
+            context = LETTER_ORDER[spelling]
         else:
             # What is next letter?
             #enh = LETTER_ORDER.index((note + 1) % len(LETTER_ORDER)
             if len(key) > 6:
                 key.append(key[0])
                 continue
-            enharmonic = LETTER_ORDER[(LETTER_ORDER.index(note[0]) + 1) % len(LETTER_ORDER)][0]
-            enh_pos = CHROMA_SCALE.index(enharmonic)
-            dist = abs(pos - enh_pos)
-            enharmonic = '{}{}'.format(enharmonic, '#' * dist)
+            enharmonic = make_accidental(CHROMA_SCALE[pos % len(CHROMA_SCALE)], context)
             key.append(enharmonic)
+            # Get next context
+            spelling += 1
+            context = LETTER_ORDER[spelling % len(LETTER_ORDER)]
         try:
             if interval in INTVAL[scale]:
                 pos += 1
