@@ -103,11 +103,40 @@ Can that relation be calculated?
 Calculate distance between notes. Having a positive number converts to flats, negatives to sharps.
 '''
 
+PITCH_SCALE = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+
+
 class Tone(object):
     def __init__(self, note):
         self.note = note
-        self.note_up = ''
-        self.note_down = ''
+        self.pitch = CHROMA_SCALE.index(note)
+        self.note_flat = get_enharmonic(len(CHROMA_SCALE), self.note)
+        self.note_sharp = get_enharmonic(len(CHROMA_SCALE), self.note, up=False)
+
+    def __repr__(self):
+        print self.note
+
+
+def cheat_harmonic(note):
+    root = CHROMA_SCALE.index(note)
+    pos = LETTER_ORDER.index(note)
+    key = []
+    key.append(note)
+    step = 1
+    interval = 1
+    while len(key) > 8:
+        # Get next letter
+        tone = LETTER_ORDER[(pos + step) % len(LETTER_ORDER)]
+        # Get the next degree
+        if interval in INTVAL['major']:
+            root += 1
+        else:
+            root += 2
+        interval += 1
+        degree = CHROMA_SCALE[root % len(CHROMA_SCALE)]
+        # Now get distance between tone[0]/next letter and the degree in chroma scale
+
+
 
 
 def get_enharmonic(length, note, up=True):
@@ -118,7 +147,7 @@ def get_enharmonic(length, note, up=True):
     try:
         pos = CHROMA_SCALE.index(note)
     except ValueError:
-        raise
+        pos = CHROMA_SCALE.index(calc_pitch(note))
     steps = 0
     while CHROMA_SCALE[pos % length][0] == note[0]:
         if up:
@@ -135,21 +164,51 @@ def get_enharmonic(length, note, up=True):
 
 
 CHROMA_SCALE = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+LETTER_ORDER = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 MAJOR_HALF = [3, 7]
 MINOR_HALF = [2, 5]
 INTVAL = {'major': [3, 7], 'minor': [2, 5]}
+
+def calc_pitch(note):
+    '''
+    Taken an accidental and gets the 'normal' note in the CHROMA SCALE
+    '''
+    root = CHROMA_SCALE.index(note[0])
+    ac = note[1:]
+    for i in ac:
+        if i == '#':
+            root += 1
+        elif i == 'b':
+            root -=1
+    return CHROMA_SCALE[root % len(CHROMA_SCALE)]
 
 def gen_key_sig(note, scale):
     '''
     Using the CHROMA_SCALE for reference, create the key.
     NOTE: This only works with major. May refactor.
     '''
-    note = CHROMA_SCALE.index(note)
+    try:
+        note = CHROMA_SCALE.index(note)
+    except ValueError:
+        note = CHROMA_SCALE.index(calc_pitch(note))
     scale = scale.lower()
     key = []
     interval = 1
     while len(key) < 8:
-        key.append(CHROMA_SCALE[note % len(CHROMA_SCALE)])
+        tone = CHROMA_SCALE[note % len(CHROMA_SCALE)]
+        if tone[0] not in key:
+            key.append(tone)
+        else:
+            # What is next letter?
+            #enh = LETTER_ORDER.index((note + 1) % len(LETTER_ORDER)
+            if len(key) > 6:
+                key.append(key[0])
+                continue
+            enharmonic = LETTER_ORDER[(note+1) % len(LETTER_ORDER)]
+            enh_pos = CHROMA_SCALE.index(enharmonic)
+            dist = abs(note - enh_pos)
+            enharmonic = '{}{}'.format(enharmonic, '#' * dist)
+            key.append(enharmonic)
         try:
             if interval in INTVAL[scale]:
                 note += 1
