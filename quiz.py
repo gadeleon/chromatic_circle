@@ -169,6 +169,32 @@ MAJOR_HALF = [3, 7]
 MINOR_HALF = [2, 5]
 INTVAL = {'major': [3, 7], 'minor': [2, 5]}
 
+# Make a note of this pitch with this letter.
+
+def get_pitch(note):
+    note = note.upper()
+    try:
+        pitch = CHROMA_SCALE.index(note)
+    except ValueError:
+        pitch = CHROMA_SCALE.index(calc_pitch(note))
+    return PITCH_SCALE[pitch]
+
+def make_accidental(note, spelling):
+    note = note.upper()
+    spelling = spelling.upper()
+    # Get Pos of pitch on CHROMA
+    pitch = get_pitch(note)
+    pos = CHROMA_SCALE[pitch]
+    # Get the pos of the spelling we want
+    spell_pitch = get_pitch(spelling)
+    dist = pitch - spell_pitch
+    if dist > 0:
+        acd = '#' * dist
+    else:
+        acd = 'b' * abs(dist)
+    return '{}{}'.format(spelling, acd)
+
+
 def calc_pitch(note):
     '''
     Taken an accidental and gets the 'normal' note in the CHROMA SCALE
@@ -196,6 +222,7 @@ def gen_key_sig(note, scale):
     interval = 1
     while len(key) < 8:
         tone = CHROMA_SCALE[pos % len(CHROMA_SCALE)]
+        ## FIXME: Make Sure next tone is the next letter
         if tone[0] not in key:
             key.append(tone)
         else:
@@ -204,16 +231,16 @@ def gen_key_sig(note, scale):
             if len(key) > 6:
                 key.append(key[0])
                 continue
-            enharmonic = LETTER_ORDER[(note+1) % len(LETTER_ORDER)]
+            enharmonic = LETTER_ORDER[(LETTER_ORDER.index(note[0]) + 1) % len(LETTER_ORDER)][0]
             enh_pos = CHROMA_SCALE.index(enharmonic)
-            dist = abs(note - enh_pos)
+            dist = abs(pos - enh_pos)
             enharmonic = '{}{}'.format(enharmonic, '#' * dist)
             key.append(enharmonic)
         try:
             if interval in INTVAL[scale]:
-                note += 1
+                pos += 1
             else:
-                note += 2
+                pos += 2
             interval += 1
         except KeyError:
             print 'Scale must be "major" or "minor"; {} entered'.format(scale)
