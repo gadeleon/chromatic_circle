@@ -188,14 +188,14 @@ def gen_key_sig(note, scale):
     NOTE: This only works with major. May refactor.
     '''
     try:
-        note = CHROMA_SCALE.index(note)
+        pos = CHROMA_SCALE.index(note)
     except ValueError:
-        note = CHROMA_SCALE.index(calc_pitch(note))
+        pos = CHROMA_SCALE.index(calc_pitch(note))
     scale = scale.lower()
     key = []
     interval = 1
     while len(key) < 8:
-        tone = CHROMA_SCALE[note % len(CHROMA_SCALE)]
+        tone = CHROMA_SCALE[pos % len(CHROMA_SCALE)]
         if tone[0] not in key:
             key.append(tone)
         else:
