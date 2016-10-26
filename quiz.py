@@ -1,5 +1,5 @@
 '''
-Simple script to correctly calculate the 'correct' notes and chords in a key
+Script to correctly calculate the 'correct' notes and chords in a key
 '''
 
 
@@ -104,74 +104,18 @@ Calculate distance between notes. Having a positive number converts to flats, ne
 '''
 
 PITCH_SCALE = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-
-
-class Tone(object):
-    def __init__(self, note):
-        self.note = note
-        self.pitch = CHROMA_SCALE.index(note)
-        self.note_flat = get_enharmonic(len(CHROMA_SCALE), self.note)
-        self.note_sharp = get_enharmonic(len(CHROMA_SCALE), self.note, up=False)
-
-    def __repr__(self):
-        print self.note
-
-
-def cheat_harmonic(note):
-    root = CHROMA_SCALE.index(note)
-    pos = LETTER_ORDER.index(note)
-    key = []
-    key.append(note)
-    step = 1
-    interval = 1
-    while len(key) > 8:
-        # Get next letter
-        tone = LETTER_ORDER[(pos + step) % len(LETTER_ORDER)]
-        # Get the next degree
-        if interval in INTVAL['major']:
-            root += 1
-        else:
-            root += 2
-        interval += 1
-        degree = CHROMA_SCALE[root % len(CHROMA_SCALE)]
-        # Now get distance between tone[0]/next letter and the degree in chroma scale
-
-
-
-
-def get_enharmonic(length, note, up=True):
-    '''
-    Gets the distance between two letter changes in order to express sharps and flats otherwise known as the
-    enharmonic equivalent
-    '''
-    try:
-        pos = CHROMA_SCALE.index(note)
-    except ValueError:
-        pos = CHROMA_SCALE.index(calc_pitch(note))
-    steps = 0
-    while CHROMA_SCALE[pos % length][0] == note[0]:
-        if up:
-            pos += 1
-        else:
-            pos -= 1
-        steps += 1
-    if up:
-        flats = 'b' * steps
-    else:
-        flats = '#' * steps
-    return '{}{}'.format(CHROMA_SCALE[pos % length], flats)
-
-
-
 CHROMA_SCALE = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 LETTER_ORDER = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 MAJOR_HALF = [3, 7]
 MINOR_HALF = [2, 5]
 INTVAL = {'major': [3, 7], 'minor': [2, 5]}
 
-# Make a note of this pitch with this letter.
 
 def get_pitch(note):
+    '''
+    Gets the number in PITCH_SCALE which is 1:1 with CHROMA_SCALE
+    but can be used to get accidentals.
+    '''
     note = note.upper()
     try:
         pitch = CHROMA_SCALE.index(note)
@@ -179,18 +123,18 @@ def get_pitch(note):
         pitch = CHROMA_SCALE.index(calc_pitch(note))
     return PITCH_SCALE[pitch]
 
+
 def make_accidental(note, spelling):
     note = note.upper()
     spelling = spelling.upper()
-   # print 'Making {} in the context of {}'.format(note, spelling)
-    # Get Pos of pitch on CHROMA
+    # print 'Making {} in the context of {}'.format(note, spelling)
+    # Get index of pitch on CHROMA
     pitch = get_pitch(note)
-    pos = CHROMA_SCALE[pitch]
-    # Get the pos of the spelling we want
+    # Get the index of the spelling we want
     spell_pitch = get_pitch(spelling)
     dist = pitch - spell_pitch
     if dist > 0:
-        acd = '#' * dist 
+        acd = '#' * dist
         if len(acd) > 3:
             acd = 'b' * (dist % 10)
     else:
@@ -204,14 +148,16 @@ def calc_pitch(note):
     '''
     Taken an accidental and gets the 'normal' note in the CHROMA SCALE
     '''
+    note = note.upper()
     root = CHROMA_SCALE.index(note[0])
     ac = note[1:]
     for i in ac:
         if i == '#':
             root += 1
-        elif i == 'b':
-            root -=1
+        elif i == 'b'.upper():
+            root -= 1
     return CHROMA_SCALE[root % len(CHROMA_SCALE)]
+
 
 def gen_key_sig(note, scale):
     '''
@@ -227,34 +173,17 @@ def gen_key_sig(note, scale):
     key = []
     interval = 1
     while len(key) < 8:
-        #tone = CHROMA_SCALE[pos % len(CHROMA_SCALE)]
-        #spelling = LETTER_ORDER.index(tone[0])
-        #print spelling
         context = LETTER_ORDER[spelling % len(LETTER_ORDER)]
-        #make_accidental(tone, LETTER_ORDER[spelling % len(LETTER_ORDER)])
         if len(key) == 0:
             enharmonic = make_accidental(CHROMA_SCALE[pos % len(CHROMA_SCALE)], context)
             key.append(enharmonic)
-            # Get Next Letter
-#            spelling += 1
-#            context = LETTER_ORDER[spelling % len(LETTER_ORDER)]
-        ## FIXME: Make Sure next tone is the next letter
         elif 0 < len(key) < 7:
-            # Get pos of tone[0] in LETTER_ORDER to write context for next note
-            #spelling += 1
             context = LETTER_ORDER[spelling % len(LETTER_ORDER)]
             enharmonic = make_accidental(CHROMA_SCALE[pos % len(CHROMA_SCALE)], context)
             key.append(enharmonic)
- #           spelling = LETTER_ORDER.index(tone[0])
- #           context = LETTER_ORDER[(spelling + 1) % len(LETTER_ORDER)]
         elif len(key) > 6:
             key.append(key[0])
             continue
-           # enharmonic = make_accidental(CHROMA_SCALE[pos % len(CHROMA_SCALE)], context)
-           # key.append(enharmonic)
-            # Get next context
-            #spelling += 1
-            #context = LETTER_ORDER[spelling % len(LETTER_ORDER)]
         try:
             if interval in INTVAL[scale]:
                 pos += 1
@@ -267,39 +196,12 @@ def gen_key_sig(note, scale):
             raise SystemExit
     return key
 
-def adjust_key(keysig):
-    '''
-    Looks at key generated from gen_key_sig and corrects for flats and sharps
-    '''
-    for i in range(len(keysig)):
-        try:
-            if keysig[i % len(keysig)][0] == keysig[(i+1) % len(keysig)][0] and (keysig[(i-1) % len(keysig)][-1] == keysig[(i+1) % len(keysig)][-1]):
-                if i != 7:
-                    keysig[(i) % len(keysig)] = get_enharmonic(len(CHROMA_SCALE), keysig[(i) % len(keysig)], up=False)
-            elif keysig[i % len(keysig)][0] == keysig[(i+1) % len(keysig)][0]:
-                keysig[(i+1) % len(keysig)] = get_enharmonic(len(CHROMA_SCALE), keysig[(i+1) % len(keysig)])
-            else:
-                pass
-        except IndexError:
-            raise
-    if keysig[-1] != keysig[0]:
-        keysig[0] = keysig[-1]
-    # Do it one more time!
-    return keysig
 
-
-if __name__ == '__main__':
-    # ds = gen_key_sig('D#', 'major')
-    # print ds    
-    # ds = adjust_key(ds) 
-    # print ds
-    #a = gen_key_sig('C', 'minor')
-    #print a
-    #for i in CHROMA_SCALE:
-    #    sig = gen_key_sig(i, 'major')
-    #    print sig
-    #    sig = adjust_key(sig)
-    #    print sig
+def main():
+    '''
+    for i in CHROMA_SCALE:
+        sig = gen_key_sig(i, 'major')
+        print sig
     sharps = ['C', 'G', 'D', 'A', 'E', 'B', 'F#']
     flats = ['Gb', 'Db', 'Ab', 'Eb', 'Bb', 'F']
     #sig = gen_key_sig('Ab', 'major')
@@ -309,3 +211,10 @@ if __name__ == '__main__':
     for i in flats:
         sig = gen_key_sig(i, 'major')
         print sig
+    sig = gen_key_sig('Ab', 'major')
+    print sig
+    '''
+    pass
+
+if __name__ == '__main__':
+    main()
