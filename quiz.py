@@ -182,6 +182,7 @@ def get_pitch(note):
 def make_accidental(note, spelling):
     note = note.upper()
     spelling = spelling.upper()
+   # print 'Making {} in the context of {}'.format(note, spelling)
     # Get Pos of pitch on CHROMA
     pitch = get_pitch(note)
     pos = CHROMA_SCALE[pitch]
@@ -189,9 +190,13 @@ def make_accidental(note, spelling):
     spell_pitch = get_pitch(spelling)
     dist = pitch - spell_pitch
     if dist > 0:
-        acd = '#' * dist
+        acd = '#' * dist 
+        if len(acd) > 3:
+            acd = 'b' * (dist % 10)
     else:
         acd = 'b' * abs(dist)
+        if len(acd) > 3:
+            acd = '#' * abs(dist % 12)
     return '{}{}'.format(spelling, acd)
 
 
@@ -217,34 +222,46 @@ def gen_key_sig(note, scale):
         pos = CHROMA_SCALE.index(note)
     except ValueError:
         pos = CHROMA_SCALE.index(calc_pitch(note))
+    spelling = LETTER_ORDER.index(note[0])
     scale = scale.lower()
     key = []
     interval = 1
     while len(key) < 8:
-        tone = CHROMA_SCALE[pos % len(CHROMA_SCALE)]
-        ## FIXME: Make Sure next tone is the next letter
-        if tone[0] not in key:
-            key.append(tone)
-            # Get pos of tone[0] in LETTER_ORDER to write context
-            spelling = LETTER_ORDER.index(tone[0])
-            context = LETTER_ORDER[(spelling + 1) % len(LETTER_ORDER)]
-        else:
-            # What is next letter?
-            #enh = LETTER_ORDER.index((note + 1) % len(LETTER_ORDER)
-            if len(key) > 6:
-                key.append(key[0])
-                continue
+        #tone = CHROMA_SCALE[pos % len(CHROMA_SCALE)]
+        #spelling = LETTER_ORDER.index(tone[0])
+        #print spelling
+        context = LETTER_ORDER[spelling % len(LETTER_ORDER)]
+        #make_accidental(tone, LETTER_ORDER[spelling % len(LETTER_ORDER)])
+        if len(key) == 0:
             enharmonic = make_accidental(CHROMA_SCALE[pos % len(CHROMA_SCALE)], context)
             key.append(enharmonic)
-            # Get next context
-            spelling += 1
+            # Get Next Letter
+#            spelling += 1
+#            context = LETTER_ORDER[spelling % len(LETTER_ORDER)]
+        ## FIXME: Make Sure next tone is the next letter
+        elif 0 < len(key) < 7:
+            # Get pos of tone[0] in LETTER_ORDER to write context for next note
+            #spelling += 1
             context = LETTER_ORDER[spelling % len(LETTER_ORDER)]
+            enharmonic = make_accidental(CHROMA_SCALE[pos % len(CHROMA_SCALE)], context)
+            key.append(enharmonic)
+ #           spelling = LETTER_ORDER.index(tone[0])
+ #           context = LETTER_ORDER[(spelling + 1) % len(LETTER_ORDER)]
+        elif len(key) > 6:
+            key.append(key[0])
+            continue
+           # enharmonic = make_accidental(CHROMA_SCALE[pos % len(CHROMA_SCALE)], context)
+           # key.append(enharmonic)
+            # Get next context
+            #spelling += 1
+            #context = LETTER_ORDER[spelling % len(LETTER_ORDER)]
         try:
             if interval in INTVAL[scale]:
                 pos += 1
             else:
                 pos += 2
             interval += 1
+            spelling += 1
         except KeyError:
             print 'Scale must be "major" or "minor"; {} entered'.format(scale)
             raise SystemExit
@@ -278,8 +295,17 @@ if __name__ == '__main__':
     # print ds
     #a = gen_key_sig('C', 'minor')
     #print a
-    for i in CHROMA_SCALE:
+    #for i in CHROMA_SCALE:
+    #    sig = gen_key_sig(i, 'major')
+    #    print sig
+    #    sig = adjust_key(sig)
+    #    print sig
+    sharps = ['C', 'G', 'D', 'A', 'E', 'B', 'F#']
+    flats = ['Gb', 'Db', 'Ab', 'Eb', 'Bb', 'F']
+    #sig = gen_key_sig('Ab', 'major')
+    for i in sharps:
         sig = gen_key_sig(i, 'major')
         print sig
-        sig = adjust_key(sig)
+    for i in flats:
+        sig = gen_key_sig(i, 'major')
         print sig
