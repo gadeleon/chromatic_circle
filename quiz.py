@@ -227,7 +227,7 @@ def gen_key_sig(note, scale):
             key.append(tone)
             # Get pos of tone[0] in LETTER_ORDER to write context
             spelling = LETTER_ORDER.index(tone[0])
-            context = LETTER_ORDER[spelling]
+            context = LETTER_ORDER[(spelling + 1) % len(LETTER_ORDER)]
         else:
             # What is next letter?
             #enh = LETTER_ORDER.index((note + 1) % len(LETTER_ORDER)
