@@ -103,12 +103,17 @@ Can that relation be calculated?
 Calculate distance between notes. Having a positive number converts to flats, negatives to sharps.
 '''
 
+import questions
+
+import random
+
 PITCH_SCALE = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 CHROMA_SCALE = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 LETTER_ORDER = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 MAJOR_HALF = [3, 7]
 MINOR_HALF = [2, 5]
 INTVAL = {'major': [3, 7], 'minor': [2, 5]}
+CIRCLE = ['C', 'G', 'D', 'A', 'E', 'B', 'Gb', 'F#', 'Db', 'C#', 'Ab', 'Eb', 'Bb', 'F' ]
 
 
 def get_pitch(note):
@@ -197,6 +202,29 @@ def gen_key_sig(note, scale):
     return key
 
 
+def gen_question():
+    #cat = random.randint(1,2)
+    scale = random.randint(0,1)
+    note = CIRCLE[random.randint(0, (len(CIRCLE)-1))]
+    #q = ['degree', 'degree']
+    # q = ['degree', 'triad']
+    s = ['major', 'major']
+    # s = ['major', 'minor']
+    key = gen_key_sig(note, s[scale])
+    #question, degree = questions.degree(note, s[scale])
+    correct = False
+    while not correct:
+        question, degree = questions.degree(note, s[scale])
+        #print question, degree, key, key[degree]
+        if key[(degree) % len(key)] == question:
+            print 'You Done Got it Right!'
+            correct = True
+        else:
+            continue
+
+
+
+
 def main():
     '''
     for i in CHROMA_SCALE:
@@ -214,7 +242,7 @@ def main():
     sig = gen_key_sig('Ab', 'major')
     print sig
     '''
-    pass
+    gen_question()
 
 if __name__ == '__main__':
     main()
