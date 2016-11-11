@@ -113,7 +113,7 @@ LETTER_ORDER = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 MAJOR_HALF = [3, 7]
 MINOR_HALF = [2, 5]
 INTVAL = {'major': [3, 7], 'minor': [2, 5]}
-CIRCLE = ['C', 'G', 'D', 'A', 'E', 'B', 'Gb', 'F#', 'Db', 'C#', 'Ab', 'Eb', 'Bb', 'F' ]
+CIRCLE = ['C', 'G', 'D', 'A', 'E', 'B', 'Gb', 'F#', 'Db', 'C#', 'Ab', 'Eb', 'Bb', 'F']
 
 
 def get_pitch(note):
@@ -202,27 +202,52 @@ def gen_key_sig(note, scale):
     return key
 
 
-def gen_question():
-    #cat = random.randint(1,2)
-    scale = random.randint(0,1)
-    note = CIRCLE[random.randint(0, (len(CIRCLE)-1))]
-    #q = ['degree', 'degree']
-    q = [questions.degree, questions.triad]
-    s = ['major', 'major']
-    # s = ['major', 'minor']
-    key = gen_key_sig(note, s[scale])
-    #question, degree = questions.degree(note, s[scale])
+def grade_degree(key, note, scale):
     correct = False
     while not correct:
-        question, degree = random.choice(q)(note, s[scale])
-        #print question, degree, key, key[degree]
-        if key[(degree) % len(key)] == question:
-            print 'You Done Got it Right!'
+        answer, degree = questions.degree(note, scale)
+        if key[(degree) % len(key)] == answer:
+            print 'You Done got it Right!'
             correct = True
         else:
             continue
 
 
+def grade_triad(key, note, scale):
+    correct = False
+    while not correct:
+        answer, note = questions.triad(note, scale)
+        answer_triad = [key[0], key[2], key[4]]
+        #print answer_triad
+        my_triad = []
+        if ',' in answer:
+            my_triad = answer.split(', ')
+            print my_triad
+            if len(my_triad) != 3:
+                my_triad = answer.split(',')
+        else:
+            my_triad = answer.split(' ')
+        if len(my_triad) != 3:
+            print 'Answer with commas or spaces between notes'
+            raise SystemExit
+        validation = [i for i, x in zip(answer_triad, my_triad) if i == x]
+        #print validation
+        if len(validation) == 3:
+            print 'You Done got it Right!  '
+            correct = True
+        else:
+            continue
+
+
+def gen_question():
+    #scale = random.randint(0,1)
+    note = CIRCLE[random.randint(0, (len(CIRCLE)-1))]
+    q = [grade_degree, grade_triad]
+    s = ['major', 'major']
+    # s = ['major', 'minor']
+    scale = random.choice(s)
+    key = gen_key_sig(note, scale)
+    random.choice(q)(key, note, scale)
 
 
 def main():

@@ -18,5 +18,5 @@ def triad(note, scale):
     '''
     What are the notes in a <NOTE> <Scale> triad?
     '''
-    answer = raw_input('What notes are in a {} {} triad'.format(note, scale.capitalize()))
+    answer = raw_input('What notes are in a {} {} triad: '.format(note, scale.capitalize()))
     return answer, note
