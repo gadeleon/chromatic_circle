@@ -207,14 +207,14 @@ def gen_question():
     scale = random.randint(0,1)
     note = CIRCLE[random.randint(0, (len(CIRCLE)-1))]
     #q = ['degree', 'degree']
-    #q = ['degree', 'triad']
+    q = [questions.degree, questions.triad]
     s = ['major', 'major']
     # s = ['major', 'minor']
     key = gen_key_sig(note, s[scale])
     #question, degree = questions.degree(note, s[scale])
     correct = False
     while not correct:
-        question, degree = questions.degree(note, s[scale])
+        question, degree = random.choice(q)(note, s[scale])
         #print question, degree, key, key[degree]
         if key[(degree) % len(key)] == question:
             print 'You Done Got it Right!'
