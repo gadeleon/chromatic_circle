@@ -2,17 +2,14 @@
 Questions generation functions
 '''
 
-import quiz
-import random
 
-
-def degree(note, scale):
+def degree(note, scale, degree):
     '''
     What is the <Number> of <Note> <Scale>?
     '''
-    deg = random.randint(0, 6)
-    answer = raw_input('What is the {} of {} {}: '.format(str(deg + 1), note, scale.capitalize()))
-    return answer, deg
+    answer = raw_input('What is the {} of {} {}: '.format(str(degree + 1), note, scale.capitalize()))
+    return answer, degree
+
 
 def triad(note, scale):
     '''
