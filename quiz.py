@@ -203,9 +203,10 @@ def gen_key_sig(note, scale):
 
 
 def grade_degree(key, note, scale):
+    deg = random.randint(0, 6)
     correct = False
     while not correct:
-        answer, degree = questions.degree(note, scale)
+        answer, degree = questions.degree(note, scale, deg)
         if key[(degree) % len(key)] == answer:
             print 'You Done got it Right!'
             correct = True
