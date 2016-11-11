@@ -207,7 +207,7 @@ def gen_question():
     scale = random.randint(0,1)
     note = CIRCLE[random.randint(0, (len(CIRCLE)-1))]
     #q = ['degree', 'degree']
-    # q = ['degree', 'triad']
+    #q = ['degree', 'triad']
     s = ['major', 'major']
     # s = ['major', 'minor']
     key = gen_key_sig(note, s[scale])
