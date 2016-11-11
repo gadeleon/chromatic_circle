@@ -216,11 +216,11 @@ def grade_degree(key, note, scale):
 
 def grade_triad(key, note, scale):
     correct = False
+    answer_triad = [key[0], key[2], key[4]]
+    my_triad = []
     while not correct:
-        answer, note = questions.triad(note, scale)
-        answer_triad = [key[0], key[2], key[4]]
+        answer = questions.triad(note, scale)
         #print answer_triad
-        my_triad = []
         if ',' in answer:
             my_triad = answer.split(', ')
             print my_triad
