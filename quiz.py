@@ -109,46 +109,6 @@ import music_theory
 import random
 
 
-def grade_degree(key, note, scale):
-    deg = random.randint(0, 6)
-    answer = key[deg]
-    correct = False
-    while not correct:
-        my_answer, degree = questions.degree(note, scale, deg)
-        #if key[(degree) % len(key)] == answer:
-        if my_answer == answer:
-            print 'You Done got it Right!'
-            correct = True
-        else:
-            continue
-
-
-def grade_triad(key, note, scale):
-    correct = False
-    answer_triad = [key[0], key[2], key[4]]
-    my_triad = []
-    while not correct:
-        answer = questions.triad(note, scale)
-        #print answer_triad
-        if ',' in answer:
-            my_triad = answer.split(', ')
-            print my_triad
-            if len(my_triad) != 3:
-                my_triad = answer.split(',')
-        else:
-            my_triad = answer.split(' ')
-        if len(my_triad) != 3:
-            print 'Answer with commas or spaces between notes'
-            raise SystemExit
-        validation = [i for i, x in zip(answer_triad, my_triad) if i == x]
-        #print validation
-        if len(validation) == 3:
-            print 'You Done got it Right!  '
-            correct = True
-        else:
-            continue
-
-
 def gen_question():
     note = random.choice(music_theory.CIRCLE)
     q = [questions.grade_degree, questions.grade_triad]
