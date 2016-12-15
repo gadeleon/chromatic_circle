@@ -62,7 +62,6 @@ def calc_pitch(note):
 def gen_key_sig(note, scale):
     '''
     Using the CHROMA_SCALE for reference, create the key.
-    NOTE: This only works with major. May refactor.
     '''
     try:
         pos = CHROMA_SCALE.index(note)
