@@ -151,7 +151,7 @@ def grade_triad(key, note, scale):
 
 def gen_question():
     note = random.choice(music_theory.CIRCLE)
-    q = [grade_degree, grade_triad]
+    q = [questions.grade_degree, questions.grade_triad]
     s = ['major', 'major']
     # s = ['major', 'minor']
     scale = random.choice(s)
