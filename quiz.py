@@ -104,6 +104,7 @@ Calculate distance between notes. Having a positive number converts to flats, ne
 '''
 
 import questions
+import music_theory
 
 import random
 
@@ -204,10 +205,12 @@ def gen_key_sig(note, scale):
 
 def grade_degree(key, note, scale):
     deg = random.randint(0, 6)
+    answer = key[deg]
     correct = False
     while not correct:
-        answer, degree = questions.degree(note, scale, deg)
-        if key[(degree) % len(key)] == answer:
+        my_answer, degree = questions.degree(note, scale, deg)
+        #if key[(degree) % len(key)] == answer:
+        if my_answer == answer:
             print 'You Done got it Right!'
             correct = True
         else:
@@ -241,13 +244,12 @@ def grade_triad(key, note, scale):
 
 
 def gen_question():
-    #scale = random.randint(0,1)
-    note = CIRCLE[random.randint(0, (len(CIRCLE)-1))]
+    note = random.choice(music_theory.CIRCLE)
     q = [grade_degree, grade_triad]
     s = ['major', 'major']
     # s = ['major', 'minor']
     scale = random.choice(s)
-    key = gen_key_sig(note, scale)
+    key = music_theory.gen_key_sig(note, scale)
     random.choice(q)(key, note, scale)
 
 
