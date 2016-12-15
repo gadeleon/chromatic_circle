@@ -41,7 +41,6 @@ def grade_triad(key, note, scale):
     my_triad = []
     while not correct:
         answer = triad(note, scale)
-        #print answer_triad
         if ',' in answer:
             my_triad = answer.split(', ')
             print my_triad
@@ -53,10 +52,8 @@ def grade_triad(key, note, scale):
             print 'Answer with commas or spaces between notes'
             raise SystemExit
         validation = [i for i, x in zip(answer_triad, my_triad) if i == x]
-        #print validation
         if len(validation) == 3:
             print 'You Done got it Right!  '
             correct = True
         else:
             continue
-
