@@ -25,6 +25,9 @@ def get_pitch(note):
 
 
 def make_accidental(note, spelling):
+    '''
+    "Spell" the variable note in the context of the variable spelling
+    '''
     note = note.upper()
     spelling = spelling.upper()
     # print 'Making {} in the context of {}'.format(note, spelling)
@@ -67,6 +70,7 @@ def gen_key_sig(note, scale):
         pos = CHROMA_SCALE.index(note)
     except ValueError:
         pos = CHROMA_SCALE.index(calc_pitch(note))
+    # Make sure we grab only grab the letter from accidentals (eg, C from C#)
     spelling = LETTER_ORDER.index(note[0])
     scale = scale.lower()
     key = []
@@ -83,6 +87,7 @@ def gen_key_sig(note, scale):
         elif len(key) > 6:
             key.append(key[0])
             continue
+        # Determine half step or whole step for next note
         try:
             if interval in INTVAL[scale]:
                 pos += 1
