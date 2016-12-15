@@ -19,7 +19,6 @@ def grade_degree(key, note, scale):
     correct = False
     while not correct:
         my_answer, my_degree = degree(note, scale, deg)
-        #if key[(degree) % len(key)] == answer:
         if my_answer == answer:
             print 'You Done got it Right!'
             correct = True
