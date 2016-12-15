@@ -2,6 +2,8 @@
 Questions generation functions
 '''
 
+import random
+
 
 def degree(note, scale, degree):
     '''
@@ -16,7 +18,7 @@ def grade_degree(key, note, scale):
     answer = key[deg]
     correct = False
     while not correct:
-        my_answer, degree = questions.degree(note, scale, deg)
+        my_answer, my_degree = degree(note, scale, deg)
         #if key[(degree) % len(key)] == answer:
         if my_answer == answer:
             print 'You Done got it Right!'
@@ -38,7 +40,7 @@ def grade_triad(key, note, scale):
     answer_triad = [key[0], key[2], key[4]]
     my_triad = []
     while not correct:
-        answer = questions.triad(note, scale)
+        answer = triad(note, scale)
         #print answer_triad
         if ',' in answer:
             my_triad = answer.split(', ')
