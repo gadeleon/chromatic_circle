@@ -104,150 +104,18 @@ Calculate distance between notes. Having a positive number converts to flats, ne
 '''
 
 import questions
+import music_theory
 
 import random
 
-PITCH_SCALE = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-CHROMA_SCALE = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
-LETTER_ORDER = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
-MAJOR_HALF = [3, 7]
-MINOR_HALF = [2, 5]
-INTVAL = {'major': [3, 7], 'minor': [2, 5]}
-CIRCLE = ['C', 'G', 'D', 'A', 'E', 'B', 'Gb', 'F#', 'Db', 'C#', 'Ab', 'Eb', 'Bb', 'F']
-
-
-def get_pitch(note):
-    '''
-    Gets the number in PITCH_SCALE which is 1:1 with CHROMA_SCALE
-    but can be used to get accidentals.
-    '''
-    note = note.upper()
-    try:
-        pitch = CHROMA_SCALE.index(note)
-    except ValueError:
-        pitch = CHROMA_SCALE.index(calc_pitch(note))
-    return PITCH_SCALE[pitch]
-
-
-def make_accidental(note, spelling):
-    note = note.upper()
-    spelling = spelling.upper()
-    # print 'Making {} in the context of {}'.format(note, spelling)
-    # Get index of pitch on CHROMA
-    pitch = get_pitch(note)
-    # Get the index of the spelling we want
-    spell_pitch = get_pitch(spelling)
-    dist = pitch - spell_pitch
-    if dist > 0:
-        acd = '#' * dist
-        if len(acd) > 3:
-            acd = 'b' * (dist % 10)
-    else:
-        acd = 'b' * abs(dist)
-        if len(acd) > 3:
-            acd = '#' * abs(dist % 12)
-    return '{}{}'.format(spelling, acd)
-
-
-def calc_pitch(note):
-    '''
-    Taken an accidental and gets the 'normal' note in the CHROMA SCALE
-    '''
-    note = note.upper()
-    root = CHROMA_SCALE.index(note[0])
-    ac = note[1:]
-    for i in ac:
-        if i == '#':
-            root += 1
-        elif i == 'b'.upper():
-            root -= 1
-    return CHROMA_SCALE[root % len(CHROMA_SCALE)]
-
-
-def gen_key_sig(note, scale):
-    '''
-    Using the CHROMA_SCALE for reference, create the key.
-    NOTE: This only works with major. May refactor.
-    '''
-    try:
-        pos = CHROMA_SCALE.index(note)
-    except ValueError:
-        pos = CHROMA_SCALE.index(calc_pitch(note))
-    spelling = LETTER_ORDER.index(note[0])
-    scale = scale.lower()
-    key = []
-    interval = 1
-    while len(key) < 8:
-        context = LETTER_ORDER[spelling % len(LETTER_ORDER)]
-        if len(key) == 0:
-            enharmonic = make_accidental(CHROMA_SCALE[pos % len(CHROMA_SCALE)], context)
-            key.append(enharmonic)
-        elif 0 < len(key) < 7:
-            context = LETTER_ORDER[spelling % len(LETTER_ORDER)]
-            enharmonic = make_accidental(CHROMA_SCALE[pos % len(CHROMA_SCALE)], context)
-            key.append(enharmonic)
-        elif len(key) > 6:
-            key.append(key[0])
-            continue
-        try:
-            if interval in INTVAL[scale]:
-                pos += 1
-            else:
-                pos += 2
-            interval += 1
-            spelling += 1
-        except KeyError:
-            print 'Scale must be "major" or "minor"; {} entered'.format(scale)
-            raise SystemExit
-    return key
-
-
-def grade_degree(key, note, scale):
-    deg = random.randint(0, 6)
-    correct = False
-    while not correct:
-        answer, degree = questions.degree(note, scale, deg)
-        if key[(degree) % len(key)] == answer:
-            print 'You Done got it Right!'
-            correct = True
-        else:
-            continue
-
-
-def grade_triad(key, note, scale):
-    correct = False
-    answer_triad = [key[0], key[2], key[4]]
-    my_triad = []
-    while not correct:
-        answer = questions.triad(note, scale)
-        #print answer_triad
-        if ',' in answer:
-            my_triad = answer.split(', ')
-            print my_triad
-            if len(my_triad) != 3:
-                my_triad = answer.split(',')
-        else:
-            my_triad = answer.split(' ')
-        if len(my_triad) != 3:
-            print 'Answer with commas or spaces between notes'
-            raise SystemExit
-        validation = [i for i, x in zip(answer_triad, my_triad) if i == x]
-        #print validation
-        if len(validation) == 3:
-            print 'You Done got it Right!  '
-            correct = True
-        else:
-            continue
-
 
 def gen_question():
-    #scale = random.randint(0,1)
-    note = CIRCLE[random.randint(0, (len(CIRCLE)-1))]
-    q = [grade_degree, grade_triad]
+    note = random.choice(music_theory.CIRCLE)
+    q = [questions.grade_degree, questions.grade_triad]
     s = ['major', 'major']
     # s = ['major', 'minor']
     scale = random.choice(s)
-    key = gen_key_sig(note, scale)
+    key = music_theory.gen_key_sig(note, scale)
     random.choice(q)(key, note, scale)
 
 
