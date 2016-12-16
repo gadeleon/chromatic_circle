@@ -119,6 +119,13 @@ def gen_question():
     random.choice(q)(key, note, scale)
 
 
+def start(scales, category):
+    '''
+    Utilize gen_question to make quiz
+    '''
+    scales = scales.split(' ')
+
+
 def main():
     '''
     for i in CHROMA_SCALE:
