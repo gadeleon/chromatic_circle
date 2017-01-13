@@ -71,7 +71,11 @@ def gen_key_sig(note, scale):
     except ValueError:
         pos = CHROMA_SCALE.index(calc_pitch(note))
     # Make sure we grab only grab the letter from accidentals (eg, C from C#)
-    spelling = LETTER_ORDER.index(note[0])
+    try:
+        spelling = LETTER_ORDER.index(note[0])
+    except ValueError:
+        note = note.upper()
+        spelling = LETTER_ORDER.index(note[0])
     scale = scale.lower()
     key = []
     interval = 1

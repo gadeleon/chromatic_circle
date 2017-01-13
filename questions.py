@@ -9,8 +9,12 @@ def degree(note, scale, degree):
     '''
     What is the <Number> of <Note> <Scale>?
     '''
-    answer = raw_input('What is the {} of {} {}: '.format(str(degree + 1), note, scale.capitalize()))
-    return answer, degree
+    try:
+        answer = raw_input('What is the {} of {} {}: '.format(str(degree + 1), note, scale.capitalize()))
+        return answer, degree
+    except KeyboardInterrupt:
+        print '\nQUITTER!'
+        raise SystemExit
 
 
 def grade_degree(key, note, scale):
@@ -30,8 +34,12 @@ def triad(note, scale):
     '''
     What are the notes in a <NOTE> <Scale> triad?
     '''
-    answer = raw_input('What notes are in a {} {} triad: '.format(note, scale.capitalize()))
-    return answer
+    try:
+        answer = raw_input('What notes are in a {} {} triad: '.format(note, scale.capitalize()))
+        return answer
+    except KeyboardInterrupt:
+        print '\nQUITTER!'
+        raise SystemExit
 
 
 def grade_triad(key, note, scale):
